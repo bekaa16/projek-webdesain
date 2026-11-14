@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keranjang Belanja & Checkout - Percetakan TDP</title>
+  <meta name="description" content="Halaman keranjang belanja Percetakan TDP. Checkout dengan opsi pembayaran DP 50% atau lunas 100%, cetak nota, dan kirim rincian pesanan via WhatsApp.">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Site Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo-wrapper">
+        <img src="assets/tdp-logo.jpeg" class="logo-badge" alt="Tornado Digital Printing">
+        <div class="logo-text">
+          Percetakan <span>TDP</span>
+          <span class="logo-tagline">Print & Merchandise</span>
+        </div>
+      </a>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button class="mobile-toggle" aria-label="Buka Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- Nav Menu Links -->
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Beranda</a></li>
+        <li><a href="index.html#katalog" class="nav-link">Katalog Layanan</a></li>
+        <li><a href="kalkulator.html" class="nav-link">Kalkulator Harga</a></li>
+        <li><a href="pesanan.html" class="nav-link">Cek Antrian & Status</a></li>
+        <li>
+          <a href="keranjang.html" class="nav-link cart-link active">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#shopping-cart"></use></svg>
+            Keranjang
+            <span class="cart-count-badge" style="display: none;">0</span>
+          </a>
+        </li>
+        <li><a href="login.html" class="nav-link nav-auth-link" data-open-login>Masuk/Daftar</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container" id="cart-page-root" style="padding: 2rem 1.25rem 4rem;">
+    <!-- Breadcrumb -->
+    <div class="page-intro no-print">
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+        <a href="index.html">Beranda</a> &rsaquo; Keranjang Belanja & Checkout
+      </p>
+      <h1>Keranjang Pesanan</h1>
+      <p>Periksa kembali spesifikasi pesanan Anda sebelum checkout dan konfirmasi DP produksi.</p>
+    </div>
+
+    <!-- Empty State Container -->
+    <div id="cart-empty-container" class="cart-empty-state" style="display: none;">
+      <div class="cart-empty-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#shopping-cart"></use></svg></div>
+      <h3>Keranjang Belanja Masih Kosong</h3>
+      <p style="margin-bottom: 1.5rem;">Anda belum menambahkan produk cetak ke dalam keranjang.</p>
+      <a href="index.html#katalog" class="btn btn-primary">
+        Jelajahi Katalog Produk
+        <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#arrow-right"></use></svg>
+      </a>
+    </div>
+
+    <!-- Main Cart Layout (Left: Items, Right: Checkout Form) -->
+    <div id="cart-main-layout" class="cart-layout">
+      
+      <!-- DAFTAR ITEM KERANJANG -->
+      <section>
+        <div class="cart-table-wrapper">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
+            <h3 style="font-size: 1.15rem;">Daftar Item Cetak</h3>
+            <a href="kalkulator.html" class="btn btn-outline btn-sm">
+              + Tambah Item Lain
+            </a>
+          </div>
+
+          <div id="cart-items-container">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- CHECKOUT FORM & SKEMA PEMBAYARAN -->
+      <aside>
+        <div class="checkout-box">
+          <h3>Informasi Pemesan & Checkout</h3>
+          
+          <form id="checkout-form">
+            <!-- Data Customer -->
+            <div class="form-group">
+              <label class="form-label" for="checkout-nama">Nama Lengkap / Instansi *</label>
+              <input type="text" id="checkout-nama" class="form-control" placeholder="Nama Anda atau Brand" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="checkout-wa">Nomor WhatsApp Aktif *</label>
+              <input type="tel" id="checkout-wa" class="form-control" placeholder="0812xxxxxxxx" required>
+              <span class="form-hint">Digunakan untuk konfirmasi bukti DP & info antrian selesai.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="checkout-email">Email (Opsional)</label>
+              <input type="email" id="checkout-email" class="form-control" placeholder="email@domain.com">
+            </div>
+
+            <!-- Metode Pengambilan -->
+            <div class="form-group">
+              <label class="form-label" for="checkout-metode-kirim">Metode Pengambilan *</label>
+              <select id="checkout-metode-kirim" class="form-control">
+                <option value="Ambil di Toko">Ambil di Workshop Percetakan TDP (Gratis)</option>
+                <option value="Kurir Instan (Gojek/Grab)">Kurir Instan (Gojek / Grab / Maxim) - Tarif sesuai aplikasi</option>
+                <option value="Ekspedisi Reguler (JNE/J&T/SiCepat)">Ekspedisi Reguler (JNE / J&T / SiCepat / Cargo)</option>
+              </select>
+            </div>
+
+            <!-- Catatan Pengiriman -->
+            <div class="form-group">
+              <label class="form-label" for="checkout-catatan">Catatan Tambahan untuk Admin (Opsional)</label>
+              <textarea id="checkout-catatan" class="form-control" rows="2" placeholder="Catatan alamat atau instruksi pengemasan"></textarea>
+            </div>
+
+            <!-- Skema Pembayaran (DP 50% vs Lunas) -->
+            <div class="form-group" style="padding-top: 1rem; border-top: 1px dashed var(--border);">
+              <label class="form-label">Pilih Skema Pembayaran</label>
+              
+              <label class="payment-scheme-option selected">
+                <input type="radio" name="skema_bayar" value="DP_50" checked>
+                <div>
+                  <strong>Bayar DP 50% di Awal</strong> (Rekomendasi)
+                  <p class="form-hint" style="margin-top: 0.15rem;">Cukup bayar setengah, sisa dilunasi saat hasil cetak siap diambil.</p>
+                </div>
+              </label>
+
+              <label class="payment-scheme-option">
+                <input type="radio" name="skema_bayar" value="LUNAS">
+                <div>
+                  <strong>Pelunasan Penuh (100%)</strong>
+                  <p class="form-hint" style="margin-top: 0.15rem;">Langsung lunas di awal tanpa perlu transfer lagi saat selesai.</p>
+                </div>
+              </label>
+            </div>
+
+            <!-- Ringkasan Tagihan -->
+            <div style="background: var(--bg); border-radius: var(--radius-md); padding: 1rem; margin: 1.25rem 0; font-size: 0.9rem;">
+              <div class="summary-line-item">
+                <span>Total Tagihan:</span>
+                <span id="checkout-subtotal-tagihan" style="font-weight: 700;">Rp 0</span>
+              </div>
+              <div class="summary-line-item" style="color: var(--cyan); font-weight: 700; margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--border);">
+                <span>Wajib Bayar Sekarang:</span>
+                <span id="checkout-nominal-wajib-bayar" style="font-size: 1.15rem;">Rp 0</span>
+              </div>
+              <div class="summary-line-item" style="color: var(--text-muted); font-size: 0.85rem;">
+                <span>Sisa Pelunasan Nanti:</span>
+                <span id="checkout-sisa-tagihan">Rp 0</span>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+              Proses Pesanan & Buat Invoice
+              <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#arrow-right"></use></svg>
+            </button>
+          </form>
+        </div>
+      </aside>
+    </div>
+
+    <!-- INVOICE / NOTA VIEW (Tampil Otomatis Setelah Checkout) -->
+    <div id="invoice-view-container" style="display: none;">
+      <!-- Diisi oleh app.js (renderInvoiceView) -->
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer no-print">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Percetakan TDP</h3>
+          <p>
+            Layanan cetak profesional dan merchandise kreatif. Transaksi aman, sistem kalkulasi transparan, dan pengerjaan berurutan sesuai antrian resmi.
+          </p>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Navigasi</h4>
+          <ul>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="index.html#katalog">Katalog Produk</a></li>
+            <li><a href="kalkulator.html">Kalkulator</a></li>
+            <li><a href="pesanan.html">Cek Status Pesanan</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Bantuan & CS</h4>
+          <p><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#phone"></use></svg> WhatsApp: +62 812-3456-7890</p>
+          <p><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#clock"></use></svg> Buka: Senin - Sabtu (08.30 - 20.00 WIB)</p>
+          <p><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#map-pin"></use></svg> Jl. Kreatif Grafika No. 12, Sentra Percetakan</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Percetakan TDP. Seluruh hak cipta dilindungi.</p>
+        <p>Sistem MVP Percetakan (HTML5, CSS3, Vanilla JS)</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth-modal.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masuk - Percetakan TDP</title>
+  <meta name="description" content="Masuk ke akun Percetakan TDP.">
+  <script>
+    if (new URLSearchParams(window.location.search).get("embedded") === "1") {
+      document.documentElement.classList.add("auth-embedded");
+    }
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+  <main class="auth-overlay" id="auth-page-root">
+    <section class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="auth-dialog-title">
+      <header class="auth-dialog-header">
+        <h1 id="auth-dialog-title">Masuk</h1>
+        <button type="button" class="auth-close" id="auth-close" aria-label="Tutup login">&times;</button>
+      </header>
+
+      <div class="auth-dialog-body">
+        <div id="auth-current-session" class="auth-current-session" hidden>
+          <p data-session-description></p>
+          <button type="button" class="btn btn-outline btn-sm" data-actor-logout>Keluar dari akun ini</button>
+        </div>
+
+        <form id="customer-login-form">
+          <label class="form-label" for="customer-login-identifier">Username / Nama Pelanggan</label>
+          <input id="customer-login-identifier" class="form-control auth-input" type="text" autocomplete="username" required>
+          <label class="form-label" for="customer-login-password">Password</label>
+          <div class="auth-password-wrap">
+            <input id="customer-login-password" class="form-control auth-input" type="password" autocomplete="current-password" required>
+            <button type="button" class="auth-password-toggle" data-password-toggle="customer-login-password" aria-label="Tampilkan password">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <div class="auth-options">
+            <label class="auth-remember"><input type="checkbox" data-auth-remember> Ingat saya</label>
+            <a href="mailto:order@percetakan-tdp.com?subject=Bantuan%20Password" class="auth-link">Lupa Password?</a>
+          </div>
+          <button type="submit" class="auth-submit">Masuk</button>
+        </form>
+
+        <form id="customer-register-form" hidden>
+          <label class="form-label" for="customer-register-username">Username</label>
+          <input id="customer-register-username" class="form-control auth-input" type="text" autocomplete="username" minlength="3" required>
+          <label class="form-label" for="customer-register-name">Nama Pelanggan</label>
+          <input id="customer-register-name" class="form-control auth-input" type="text" autocomplete="name" required>
+          <label class="form-label" for="customer-register-whatsapp">Nomor WhatsApp</label>
+          <input id="customer-register-whatsapp" class="form-control auth-input" type="tel" autocomplete="tel" required>
+          <label class="form-label" for="customer-register-password">Password (minimal 8 karakter)</label>
+          <div class="auth-password-wrap">
+            <input id="customer-register-password" class="form-control auth-input" type="password" autocomplete="new-password" minlength="8" required>
+            <button type="button" class="auth-password-toggle" data-password-toggle="customer-register-password" aria-label="Tampilkan password">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <label class="form-label" for="customer-register-password-confirm">Ulangi Password</label>
+          <input id="customer-register-password-confirm" class="form-control auth-input" type="password" autocomplete="new-password" minlength="8" required>
+          <div class="auth-options">
+            <label class="auth-remember"><input type="checkbox" data-auth-remember> Ingat saya</label>
+          </div>
+          <button type="submit" class="auth-submit">Daftar</button>
+        </form>
+
+        <div class="auth-divider"><span>atau</span></div>
+        <button type="button" class="auth-google-button" data-google-login>
+          <span aria-hidden="true">G</span> Masuk dengan Google
+        </button>
+        <p class="auth-register-prompt" data-auth-prompt="login">
+          Belum punya akun? Ayo <button type="button" data-auth-open-register>daftar</button>
+        </p>
+        <p class="auth-register-prompt" data-auth-prompt="register" hidden>
+          Sudah punya akun? <button type="button" data-auth-open-login>Masuk</button>
+        </p>
+
+        <p id="auth-message" role="status" aria-live="polite" class="auth-message"></p>
+        <div class="auth-legal">
+          <p>Dengan masuk, Anda menyetujui syarat dan ketentuan Percetakan TDP.</p>
+          <p>Akun demo disimpan di browser ini dan belum terhubung ke server.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/roles.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

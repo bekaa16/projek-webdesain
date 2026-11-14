@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lacak Status Antrian & Workspace Kasir - Percetakan TDP</title>
+  <meta name="description" content="Lacak progres pesanan atau kelola konfirmasi DP dan antrean produksi Percetakan TDP.">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Site Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo-wrapper">
+        <img src="assets/tdp-logo.jpeg" class="logo-badge" alt="Tornado Digital Printing">
+        <div class="logo-text">
+          Percetakan <span>TDP</span>
+          <span class="logo-tagline">Print & Merchandise</span>
+        </div>
+      </a>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button class="mobile-toggle" aria-label="Buka Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- Nav Menu Links -->
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link">Beranda</a></li>
+        <li><a href="index.html#katalog" class="nav-link">Katalog Layanan</a></li>
+        <li><a href="kalkulator.html" class="nav-link">Kalkulator Harga</a></li>
+        <li><a href="pesanan.html" class="nav-link active">Cek Antrian & Status</a></li>
+        <li>
+          <a href="keranjang.html" class="nav-link cart-link">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#shopping-cart"></use></svg>
+            Keranjang
+            <span class="cart-count-badge" style="display: none;">0</span>
+          </a>
+        </li>
+        <li><a href="login.html" class="nav-link nav-auth-link" data-open-login>Masuk/Daftar</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container" id="tracking-page-root" style="padding: 2rem 1.25rem 4rem;">
+    <!-- Breadcrumb & Intro -->
+    <div class="page-intro no-print" style="max-width: 680px; margin: 1rem 0 2rem;">
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+        <a href="index.html">Beranda</a> &rsaquo; Status Antrian Produksi
+      </p>
+      <h1>Pelacakan Antrian & Status Produksi</h1>
+      <p>
+        Setiap pesanan di Percetakan TDP memiliki nomor antrian transparan. Pantau alur proses pesanan Anda dari konfirmasi DP hingga siap diambil.
+      </p>
+    </div>
+
+    <div class="admin-card no-print" data-role-visible="kasir" hidden>
+      <strong>Workspace Kasir aktif</strong>
+      <span style="color: #111111;">Kelola pembayaran DP dan antrean produksi.</span>
+      <a href="login.html" class="btn btn-outline btn-sm" data-open-login>Ganti akun</a>
+      <button type="button" class="btn btn-outline btn-sm" data-actor-logout>Keluar</button>
+    </div>
+
+    <!-- ====================================================================
+         PANEL 1: LACAK ANTRIAN PELANGGAN
+         ==================================================================== -->
+    <div id="panel-customer-track">
+      <!-- Search Box -->
+      <div class="tracking-search-bar no-print">
+        <input 
+          type="text" 
+          id="tracking-search-input" 
+          class="form-control" 
+          placeholder="Masukkan Kode Invoice (contoh: TDP-782194)" 
+          style="font-weight: 600; text-transform: uppercase;"
+        >
+        <button type="button" id="tracking-search-btn" class="btn btn-primary" style="flex-shrink: 0;">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#search"></use></svg>
+          Lacak Pesanan
+        </button>
+      </div>
+
+      <!-- Kotak Hasil Lacak Status -->
+      <div id="tracking-result-box" style="display: none;">
+        <!-- Rendered by app.js (lacakPesanan) -->
+      </div>
+    </div>
+
+    <!-- Mode Tabs: Pelanggan vs Kasir -->
+    <div class="tabs-wrapper no-print" style="justify-content: center;">
+      <button type="button" class="tab-btn active" id="tab-btn-customer" aria-label="Lacak Antrian Pelanggan"></button>
+      <button type="button" class="tab-btn" id="tab-btn-admin">
+        Workspace Kasir
+      </button>
+    </div>
+
+    <!-- ====================================================================
+         PANEL 2: WORKSPACE KASIR
+         ==================================================================== -->
+    <div id="panel-admin-sim" style="display: none;">
+      <div class="admin-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h3 style="font-size: 1.25rem;">Panel Kasir Percetakan TDP</h3>
+            <p style="font-size: 0.85rem; color: #111111;">
+              Periksa status DP dan perbarui tahap antrean produksi pesanan.
+            </p>
+          </div>
+          <button type="button" id="admin-reset-demo-btn" class="btn btn-outline btn-sm">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons.svg#rotate-ccw"></use></svg>
+            Reset ke Demo Data
+          </button>
+        </div>
+
+        <!-- Summary Stats Boxes -->
+        <div class="admin-stats-grid">
+          <div class="stat-box">
+            <div class="stat-val" id="admin-stat-total">0</div>
+            <div class="stat-title">Total Pesanan Masuk</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="admin-stat-dp">0</div>
+            <div class="stat-title">Menunggu Konfirmasi DP</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="admin-stat-prod">0</div>
+            <div class="stat-title">Dalam Produksi / Cetak</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="admin-stat-done">0</div>
+            <div class="stat-title">Siap Diambil / Selesai</div>
+          </div>
+        </div>
+
+        <!-- Orders Table -->
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Invoice & Tanggal</th>
+                <th>Pemesan</th>
+                <th>Item Pesanan</th>
+                <th>Tagihan & Sisa</th>
+                <th>Status Produksi (Update)</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="admin-orders-table-body">
+              <!-- Rendered by app.js (renderAdminDashboard) -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer no-print">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Percetakan TDP</h3>
+          <p>
+            Menjunjung tinggi transparansi antrian produksi cetak. Hasil cetak prima, warna pekat, dan akurat untuk seluruh kebutuhan kreatif maupun komersial.
+          </p>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Navigasi</h4>
+          <ul>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="index.html#katalog">Katalog Produk</a></li>
+            <li><a href="kalkulator.html">Kalkulator</a></li>
+            <li><a href="keranjang.html">Keranjang</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Workshop & CS TDP</h4>
+          <p><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#map-pin"></use></svg> Jl. Kreatif Grafika No. 12, Sentra Percetakan</p>
+          <p><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#clock"></use></svg> Buka: Senin - Sabtu (08.30 - 20.00 WIB)</p>
+          <p><svg class="icon" aria-hidden="true"><use href="assets/icons.svg#phone"></use></svg> WhatsApp CS: +62 812-3456-7890</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Percetakan TDP. Seluruh hak cipta dilindungi.</p>
+        <p>Sistem MVP Percetakan (HTML5, CSS3, Vanilla JS)</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/roles.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth-modal.js"></script>
+</body>
+</html>
+
